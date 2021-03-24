@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lomser handmade</title>
+    <link rel="stylesheet" href="{% static 'style/main.css' %}">
+</head>
+<body>
+    <img src="{% static 'images/logo.png' %}" alt="lomser logo">
+<ul>
+  <li><a href="{% url 'home' %}">Home</a></li>
+  <li><a href="{% url 'shop' %}">Shop</a></li>
+  <li><a href="{% url 'contact' %}">Contact</a></li>
+  <li><a href="{% url 'about-us' %}">About us</a></li>
+</ul>
+{% block content %}
+    This is the base. If you see this, something clearly went wrong.
+{% endblock %}
+<footer>
+    {% block footer %}
+    idk, footer stuff
+    {% endblock %}
+</footer>
+</body>
+</html>
