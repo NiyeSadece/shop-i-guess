@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <main >
+    <div class="container wow fadeIn">
+        <h2 class="my-5 h2 text-center">Just checking address</h2>
+        {{ order.shipping_address.name }} <br>
+        {{ order.shipping_address.street }}<br>
+        {% if order.shipping_address.apartment %}
+            {{ order.shipping_address.apartment }}<br>
+        {% endif %}
+        {{ order.shipping_address.country }}
+        {{ order.shipping_address.zip }}
+        {{ order.shipping_address.city }}
+    </div>
+  </main>
+
+{% endblock content %}
