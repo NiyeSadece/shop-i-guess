@@ -1,5 +1,4 @@
 import pytest
-from shop_app.models import Product, ShoppingCart, ProductInCart
 
 
 @pytest.mark.django_db
@@ -27,29 +26,29 @@ def test_checkout2_page_view(client):
 
 
 @pytest.mark.django_db
-def test_product_page_view(client):
-    response = client.get('/product/{product.slug}')
+def test_product_page_view(client, product):
+    response = client.get(f'/product/{product.slug}')
     assert response.status_code == 301
 
 
 @pytest.mark.django_db
-def test_add_to_cart_view(client, user):
+def test_add_to_cart_view(client, user, product):
     client.force_login(user)
-    response = client.get('/add-to-cart/{product.slug}')
+    response = client.get(f'/add-to-cart/{product.slug}')
     assert response.status_code == 301
 
 
 @pytest.mark.django_db
-def test_remove_from_cart_view(client, user):
+def test_remove_from_cart_view(client, user, product):
     client.force_login(user)
-    response = client.get('/remove-from-cart/{product.slug}')
+    response = client.get(f'/remove-from-cart/{product.slug}')
     assert response.status_code == 301
 
 
 @pytest.mark.django_db
-def test_remove_item_from_cart_view(client, user):
+def test_remove_item_from_cart_view(client, user, product):
     client.force_login(user)
-    response = client.get('/remove-item-from-cart/{product.slug}')
+    response = client.get(f'/remove-item-from-cart/{product.slug}')
     assert response.status_code == 301
 
 

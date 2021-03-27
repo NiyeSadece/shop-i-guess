@@ -4,7 +4,7 @@ from django_countries.widgets import CountrySelectWidget
 
 
 class AddAddressForm(forms.Form):
-    """Form for adding another address to the account."""
+    """Form for adding another address to the account yet to be implemented."""
     line1 = forms.CharField(label='name or company', max_length=125)
     line2 = forms.CharField(label='street and number', max_length=125)
     postcode = forms.CharField(label='post code', max_length=10)
@@ -14,6 +14,7 @@ class AddAddressForm(forms.Form):
 
 
 class CheckoutForm(forms.Form):
+    """Form for the checkout view."""
     name = forms.CharField(required=False)
     street = forms.CharField(required=False)
     apartment = forms.CharField(required=False)
