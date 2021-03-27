@@ -6,6 +6,7 @@ from django.shortcuts import reverse
 
 
 class Category(models.Model):
+    """Category model for Product model."""
     name = models.CharField(max_length=64)
     slug = models.SlugField()
 
@@ -17,6 +18,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """Product model."""
     name = models.CharField(max_length=64)
     description = models.TextField()
     price = models.IntegerField()
@@ -38,12 +40,14 @@ class Product(models.Model):
 
 
 class Comment(models.Model):
+    """Comment model yet to be implemented."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     body = models.TextField()
 
 
 class Address(models.Model):
+    """Address model."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=125)
     street = models.CharField(max_length=125)
@@ -61,6 +65,7 @@ class Address(models.Model):
 
 
 class ProductInCart(models.Model):
+    """Products currently in the shopping cart."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -73,21 +78,26 @@ class ProductInCart(models.Model):
         verbose_name_plural = "ProductsInCarts"
 
     def get_total_price(self):
+        """Get the not discounted price of the same products."""
         return self.quantity * self.product.price
 
     def get_total_discount_price(self):
+        """Get the discounted price of the same products."""
         return self.quantity * self.product.discount_price
 
     def get_amount_saved(self):
+        """Get the amount saved on the same products."""
         return self.get_total_price() - self.get_total_discount_price()
 
     def get_final_price(self):
+        """Get the final price of the same products."""
         if self.product.discount_price:
             return self.get_total_discount_price()
         return self.get_total_price()
 
 
 class ShoppingCart(models.Model):
+    """Shopping cart model."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     products = models.ManyToManyField(ProductInCart)
     ordered_date = models.DateTimeField()
@@ -98,6 +108,7 @@ class ShoppingCart(models.Model):
         return self.user.username
 
     def get_total(self):
+        """Get the total price for the whole shopping cart."""
         total = 0
         for order_item in self.products.all():
             total += order_item.get_final_price()

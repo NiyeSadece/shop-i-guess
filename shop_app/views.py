@@ -12,6 +12,7 @@ from .models import Address, Product, ProductInCart, ShoppingCart
 
 
 def is_valid_form(values):
+    """Checks if the required fields of the form are present."""
     valid = True
     for field in values:
         if field == '':
@@ -20,12 +21,14 @@ def is_valid_form(values):
 
 
 class MainView(ListView):
+    """Generic view for showing products."""
     model = Product
     paginate_by = 12
     template_name = 'home.html'
 
 
 class CheckoutView(LoginRequiredMixin, View):
+    """Checkout view with an address form."""
     def get(self, request, *args, **kwargs):
         try:
             order = ShoppingCart.objects.get(user=self.request.user, ordered=False)
@@ -93,6 +96,7 @@ class CheckoutView(LoginRequiredMixin, View):
 
 
 class Checkout2View(LoginRequiredMixin, View):
+    """View for checking if address came through correctly."""
     def get(self, request, *args, **kwargs):
         order = ShoppingCart.objects.get(user=self.request.user, ordered=False)
         context = {'order': order}
@@ -100,6 +104,7 @@ class Checkout2View(LoginRequiredMixin, View):
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
+    """Displays products in the shopping cart."""
     def get(self, request, *args, **kwargs):
         try:
             order = ShoppingCart.objects.get(user=request.user, ordered=False)
@@ -113,21 +118,25 @@ class OrderSummaryView(LoginRequiredMixin, View):
 
 
 class ProductDetailView(DetailView):
+    """Generic view for showing one product."""
     model = Product
     template_name = 'product.html'
 
 
 class AboutUsView(View):
+    """Placeholder view."""
     def get(self, request, *args, **kwargs):
         return render(request, "about.html")
 
 
 class ContactView(View):
+    """Placeholder view."""
     def get(self, request, *args, **kwargs):
         return render(request, "contact.html")
 
 @login_required
 def add_to_cart(request, slug):
+    """Adds single piece of the item to the shopping cart."""
     item = get_object_or_404(Product, slug=slug)
     order_item, created = ProductInCart.objects.get_or_create(
         product=item,
@@ -157,6 +166,7 @@ def add_to_cart(request, slug):
 
 @login_required
 def remove_from_cart(request, slug):
+    """Completely removes product from the shopping cart."""
     item = get_object_or_404(Product, slug=slug)
     order_qs = ShoppingCart.objects.filter(
         user=request.user,
@@ -184,6 +194,7 @@ def remove_from_cart(request, slug):
 
 @login_required
 def remove_single_item_from_cart(request, slug):
+    """Removes one piece of the product form shopping cart."""
     item = get_object_or_404(Product, slug=slug)
     order_qs = ShoppingCart.objects.filter(
         user=request.user,

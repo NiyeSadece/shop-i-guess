@@ -6,6 +6,8 @@ register = template.Library()
 
 @register.filter
 def cart_item_count(user):
+    """Displays number of items in the shopping cart.
+        Currently shows only unique products."""
     if user.is_authenticated:
         qs = ShoppingCart.objects.filter(user=user, ordered=False)
         if qs.exists():
